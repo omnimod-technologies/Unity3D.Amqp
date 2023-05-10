@@ -47,6 +47,6 @@ sysinfo.txt
 # Builds
 *.apk
 # *.unitypackage
-
+unity/CymaticLabs.UnityAmqp/Assets/CymaticLabs/Amqp/Plugins/*.dll
 # AMQP
 AmqpConfiguration.json*
