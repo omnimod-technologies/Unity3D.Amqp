@@ -258,7 +258,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
         /// <param name="password">The connection password.</param>
         /// <param name="reconnectInterval">The number of seconds to wait before connection retry attempts.</param>
         /// <param name="requestedHeartbeat">The client/server heartbeat in seconds.</param>
-        public RabbitMqBrokerConnection(string name, string server, int amqpPort, int webPort, string virtualHost, 
+        public RabbitMqBrokerConnection(string name, string server, int amqpPort, int webPort, string virtualHost,
             string username, string password, short reconnectInterval = 5, ushort requestedHeartbeat = 30)
         {
             Name = name;
@@ -290,7 +290,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
             // Ensure that the cliient is connected
             if (State == AmqpConnectionStates.Connected && (Connection == null || !Connection.IsOpen))
             {
-                lock(stateLock) State = AmqpConnectionStates.Disconnected;
+                lock (stateLock) State = AmqpConnectionStates.Disconnected;
                 Disconnected?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -311,7 +311,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
             }
 
             if (IsConnected) return;
-            lock(stateLock) State = AmqpConnectionStates.Connecting;
+            lock (stateLock) State = AmqpConnectionStates.Connecting;
 
             //StreamRuntime.Current.LogInfo("Connecting to {0}...", this);
             Console.WriteLine("Connecting to {0}...", this);
@@ -369,7 +369,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
                         connection.ConnectionUnblocked += Connection_ConnectionUnblocked;
 
                         // Reset retries
-                        lock(stateLock) connectionRetryCount = 0;
+                        lock (stateLock) connectionRetryCount = 0;
                         reconnect = false;
 
                         bc.State = AmqpConnectionStates.Connected;
@@ -399,7 +399,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
                         else
                         {
                             // Update retry attempt  
-                            lock(stateLock) connectionRetryCount++;
+                            lock (stateLock) connectionRetryCount++;
                             Console.WriteLine("(retries:{0}) Error connecting to {1} => {2}", connectionRetryCount, this, ex.Message);
                             ConnectionError?.Invoke(this, new ExceptionEventArgs(ex));
 
@@ -443,8 +443,8 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
             exchangeSubscriptions.Clear();
             Connection.Close();
 
-            lock(stateLock)
-            { 
+            lock (stateLock)
+            {
                 State = AmqpConnectionStates.Disconnected;
             }
 
@@ -466,7 +466,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
         /// </summary>
         public void ResetConnection()
         {
-            lock(stateLock)
+            lock (stateLock)
             {
                 // Reset state
                 State = AmqpConnectionStates.Disconnected;
@@ -610,7 +610,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
 
             Console.WriteLine("Subscribed to {0}{1} on {2}", subscription.ExchangeName, subscription.RoutingKey, subscription.Connection);
             //}
-            
+
             exchangeSubscriptions.Add(subscription);
 
             // Notify
@@ -766,7 +766,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
             // Cancel the consumer
             try
             {
-                lock(Channel)
+                lock (Channel)
                 {
                     Channel.BasicCancel(subscription.ConsumerTag);
                     Console.WriteLine("{0} has unsubscribed from queue: {1}", this, subscription.QueueName);
@@ -906,7 +906,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
         /// <returns>An Exception if one occurred during the operation, otherwise NULL.</returns>
         public Exception DeclareExchange(string name, AmqpExchangeTypes type, bool durable = true, bool autoDelete = false, IDictionary<string, object> args = null)
         {
-            if (IsConnected) throw new InvalidOperationException("Exchanges cannot be declared when disconnected");
+            if (!IsConnected) throw new InvalidOperationException("Exchanges cannot be declared when disconnected");
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
             try
@@ -932,7 +932,7 @@ namespace CymaticLabs.Unity3D.Amqp.RabbitMq
         /// <returns>An Exception if one occurred during the operation, otherwise NULL.</returns>
         public Exception DeleteExchange(string name, bool ifUnused = false)
         {
-            if (IsConnected) throw new InvalidOperationException("Exchanges cannot be declared when disconnected");
+            if (!IsConnected) throw new InvalidOperationException("Exchanges cannot be declared when disconnected");
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
             try
