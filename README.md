@@ -16,18 +16,20 @@ This project offers the following:
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-  - [Background](#background)
-  - [AMQP and Unity](#amqp-and-unity)
-- [Compatibility](#compatibility)
-  - [Supported Unity 3D Builds](#supported-unity-3d-builds)
-  - [.NET RabbitMQ client 3.4.4](#net-rabbitmq-client-344)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Tutorials](https://github.com/CymaticLabs/Unity3D.Amqp/wiki/Tutorials)
-- [Thread Safety](#thread-safety)
-- [SSL Support](#ssl-support)
-- [License](#license)
+- [Unity3D.Amqp](#unity3damqp)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Background](#background)
+    - [AMQP and Unity](#amqp-and-unity)
+  - [Compatibility](#compatibility)
+    - [Supported Unity 3D Builds](#supported-unity-3d-builds)
+    - [.NET RabbitMQ client 3.4.4](#net-rabbitmq-client-344)
+  - [Installation](#installation)
+    - [Building on linux](#building-on-linux)
+  - [Quick Start](#quick-start)
+  - [Thread Safety](#thread-safety)
+  - [SSL Support](#ssl-support)
+  - [License](#license)
 
 ## Introduction
 
@@ -86,6 +88,22 @@ The **CymaticLabs.Unity3D.Amqp** project references the local 3.4.4 client proje
 Currently you should build locally by downloading the source or cloning the repository. To build, you will need [Visual Studio 2015](https://www.visualstudio.com/downloads/). Building with Mono might be possible with additional steps but that hasn't been attempted yet.
 
 **Note:** If you don't need to build the project from source you can just use the asset package directly in your Unity project. See the [Quick Start](#quick-start) section for details.
+
+### Building on linux
+
+Install [mono](https://www.mono-project.com/download/stable/).
+
+Run msbuild in the root directory of the repo:
+
+```
+msbuild
+```
+This should place all files needed to install the package in the unity/ folder.
+
+> **Warning!** The Unity package is not generated during the build.
+> The assets have to be manually copied to the destination unity-project
+
+This should place a complete unity package in unity/
 
 ## Quick Start
 
